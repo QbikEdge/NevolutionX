@@ -19,12 +19,12 @@ static void recursiveDelFolder(std::string const& path) {
   do {
     if (fData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
       recursiveDelFolder(path + "\\" + fData.cFileName);
-      RemoveDirectoryA(path.c_str());
     } else {
       DeleteFileA((path + "\\" + fData.cFileName).c_str());
     }
   } while (FindNextFile(fHandle, &fData) != 0);
   FindClose(fHandle);
+  RemoveDirectoryA(path.c_str());
 }
 
 static
@@ -53,7 +53,7 @@ std::string extractName(std::string const& path, std::string const& file) {
       }
       size_t equalMark = buf.find("=");
       if (equalMark) {
-        buf = buf.substr(equalMark);
+        buf = buf.substr(equalMark + 1);
       }
     }
   }
